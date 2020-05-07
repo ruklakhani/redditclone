@@ -4,6 +4,13 @@ const expressValidator = require('express-validator');
 const express = require('express')
 const app = express()
 const port = 3000
+const Post = require('./models/post');
+
+const exphbs = require('express-handlebars');
+
+// setup app
+app.engine('handlebars', exphbs({ defaultLayout: 'main' }));
+app.set('view engine', 'handlebars');
 
 // Use Body Parser
 app.use(bodyParser.json());
@@ -15,8 +22,13 @@ app.use(expressValidator());
 // Set db
 require('./data/reddit-db');
 
-app.get('/', (req, res) => res.send('Hello World!'))
+app.get('/', (req, res) => {
+  Post.find().lean().then(posts => {
+    res.render("posts-index", { posts });
+  }).catch(err => {
+    console.log(err.message);
+});})
 
-require('./controllers/posts.js')(app);
+require('./controllers/post.js')(app);
 
 app.listen(port, () => console.log(`Example app listening at http://localhost:${port}`))
