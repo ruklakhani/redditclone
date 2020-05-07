@@ -20,13 +20,11 @@ module.exports = (app) => {
 
   app.get("/posts/:id", function(req, res) {
     // LOOK UP THE POST
-    Post.findById(req.params.id).lean()
-      .then(post => {
-        res.render("posts-show", { post });
-      })
-      .catch(err => {
-        console.log(err.message);
-      });
+Post.findById(req.params.id).populate('comments').lean().then((post) => {
+  res.render('posts-show', { post })
+  }).catch((err) => {
+    console.log(err.message)
+  })
   });
 
   // SUBREDDIT

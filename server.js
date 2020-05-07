@@ -31,6 +31,8 @@ app.get('/', (req, res) => {
 
 require('./controllers/post.js')(app);
 
+require('./controllers/comments.js')(app);
+
 app.listen(port, () => console.log(`Example app listening at http://localhost:${port}`))
 
 module.exports = app;
