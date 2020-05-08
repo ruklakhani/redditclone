@@ -43,17 +43,19 @@ var checkAuth = (req, res, next) => {
 };
 app.use(checkAuth);
 
-app.get("/", (req, res) => {
+// INDEX
+app.get('/', (req, res) => {
   var currentUser = req.user;
-
-  Post.find({}).lean()
-    .then(posts => {
-      res.render("posts-index", { posts, currentUser });
-    })
-    .catch(err => {
+  // res.render('home', {});
+  console.log(req.cookies);
+  Post.find().lean().populate('author')
+  .then(posts => {
+      res.render('posts-index', { posts, currentUser });
+      // res.render('home', {});
+  }).catch(err => {
       console.log(err.message);
-    });
-});
+  })
+})
 
 
 
