@@ -3,15 +3,16 @@ const Post = require('../models/post');
 module.exports = (app) => {
 
   // CREATE
-  app.post('/posts/new', (req, res) => {
-    // INSTANTIATE INSTANCE OF POST MODEL
-    const post = new Post(req.body);
+  app.post("/posts/new", (req, res) => {
+    if (req.user) {
+      var post = new Post(req.body);
 
-    // SAVE INSTANCE OF POST MODEL TO DB
-    post.save((err, post) => {
-      // REDIRECT TO THE ROOT
-      return res.redirect(`/`);
-    })
+      post.save(function(err, post) {
+        return res.redirect(`/`);
+      });
+    } else {
+      return res.status(401); // UNAUTHORIZED
+    }
   });
 
   app.get('/posts/new', (req, res) => {
@@ -20,12 +21,13 @@ module.exports = (app) => {
 
   app.get("/posts/:id", function(req, res) {
     // LOOK UP THE POST
-Post.findById(req.params.id).populate('comments').lean().then((post) => {
-  res.render('posts-show', { post })
-  }).catch((err) => {
-    console.log(err.message)
-  })
+    Post.findById(req.params.id).populate('comments').lean().then((post) => {
+    res.render('posts-show', { post })
+    }).catch((err) => {
+      console.log(err.message)
+    })
   });
+
 
   // SUBREDDIT
   app.get("/n/:subreddit", function(req, res) {
