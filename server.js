@@ -59,11 +59,10 @@ app.get('/', (req, res) => {
 
 
 
-require('./controllers/post.js')(app);
-
+require('./controllers/posts')(app);
 require('./controllers/comments.js')(app);
-
 require('./controllers/auth.js')(app);
+require('./controllers/replies.js')(app);
 
 app.listen(port, () => console.log(`Example app listening at http://localhost:${port}`))
 
