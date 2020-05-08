@@ -29,7 +29,7 @@ Post.findById(req.params.id).populate('comments').lean().then((post) => {
 
   // SUBREDDIT
   app.get("/n/:subreddit", function(req, res) {
-    Post.find({ subreddit: req.params.subreddit })
+    Post.find({ subreddit: req.params.subreddit }).lean()
       .then(posts => {
         res.render("posts-index", { posts });
       })

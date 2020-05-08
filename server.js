@@ -1,5 +1,10 @@
+require('dotenv').config();
+
 const bodyParser = require('body-parser');
 const expressValidator = require('express-validator');
+
+var cookieParser = require('cookie-parser');
+const jwt = require('jsonwebtoken');
 
 const express = require('express')
 const app = express()
@@ -8,8 +13,10 @@ const Post = require('./models/post');
 
 const exphbs = require('express-handlebars');
 
+app.use(cookieParser()); // Add this after you initialize express.
+
 // setup app
-app.engine('handlebars', exphbs({ defaultLayout: 'main' }));
+app.engine('handlebars', exphbs({ defaultLayout: 'main',  partialsDir: __dirname + '/views/partials/'}));
 app.set('view engine', 'handlebars');
 
 // Use Body Parser
@@ -32,6 +39,8 @@ app.get('/', (req, res) => {
 require('./controllers/post.js')(app);
 
 require('./controllers/comments.js')(app);
+
+require('./controllers/auth.js')(app);
 
 app.listen(port, () => console.log(`Example app listening at http://localhost:${port}`))
 
