@@ -26,6 +26,8 @@ app.use(bodyParser.urlencoded({ extended: false }));
 // Add after body parser initialization!
 app.use(expressValidator());
 
+app.use(express.static('public'));
+
 // Set db
 require('./data/reddit-db');
 
@@ -59,7 +61,7 @@ app.get('/', (req, res) => {
 
 
 
-require('./controllers/posts')(app);
+require('./controllers/post')(app);
 require('./controllers/comments.js')(app);
 require('./controllers/auth.js')(app);
 require('./controllers/replies.js')(app);
